@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class GreetingController {
     @RequestMapping(value="/report",method=RequestMethod.POST)
     public String reportResponse(@RequestBody lichenReport report){
-        return "OK"
+        return "OK";
     }
 }
