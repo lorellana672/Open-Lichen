@@ -18,13 +18,22 @@ public class LichenReportController {
 
     @Autowired
     private LichenReportRepositories lichenReportRepositories;
+    @Autowired
+    private AtmosphereIndexRepositories atmosphereIndexRepositories;
+    @Autowired
+    private LichenAnalyticsService lichenAnalyticsService;
 
     @RequestMapping(value="/report", method=RequestMethod.POST)
-    public ResponseEntity reportResponse(@RequestBody LichenReport report){
+    public ResponseEntity<AtmosphereIndexes> reportResponse(@RequestBody LichenReport report){
         logger.info(report.toString());
-        lichenReportRepositories.insert(report);
-        return ResponseEntity.ok()
+        lichenReportRepositories.save(report);
+        AtmosphereIndexes atmosphereIndexes = AtmosphereIndexes.builder()
+                .iapf(lichenAnalyticsService.getIAPF(report))
+                .iapq(lichenAnalyticsService.getIAPQ(report))
                 .build();
+        atmosphereIndexRepositories.save(atmosphereIndexes);
+        return ResponseEntity.ok()
+                .body(atmosphereIndexes);
     }
 
     @RequestMapping(value="/report", method=RequestMethod.GET)
@@ -36,4 +45,16 @@ public class LichenReportController {
                         .limit(lasts)
                         .collect(Collectors.toList()));
     }
+
+
+    @RequestMapping(value="/atmos", method=RequestMethod.GET)
+    public ResponseEntity<AtmosphereIndexes> getLastIndex(){
+        logger.info("Retrieving index actual atmosphere reports from Database");
+        return ResponseEntity.ok()
+                .body(atmosphereIndexRepositories.findById(1)
+                        .orElseGet(() -> AtmosphereIndexes.builder()
+                                        .iapf(0)
+                                        .iapq(0).build()));
+    }
+
 }
