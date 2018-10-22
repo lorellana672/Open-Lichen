@@ -1,3 +1,5 @@
+#IMPORTANTE! El mantenimiento del proyecto se movio a : `https://github.com/cloudhackgroup`
+
 # Open Lichen Server
 Los liquenes son un buen bioindicador para estimar la calidad del aire
 
@@ -24,3 +26,10 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/common-applicatio
 Luego basta con setear como ejecutable el `gradlew` con `$ chmod +x gradlew`  
 y para correr el servidor
 `$ ./gradlew bootRun`
+
+
+
+
+
+
+
